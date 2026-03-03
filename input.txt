@@ -1,5 +1,4 @@
 FEMALE:
-AAb
 Heroilda
 Herminia
 Hollie
