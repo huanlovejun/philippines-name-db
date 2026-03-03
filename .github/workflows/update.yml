@@ -26,8 +26,9 @@ jobs:
 
           def save_json(path, data):
               # 保存前打印数据的长度，确保文件保存正确
-              print(f"Saving {len(data)} items to {path}")
+              print(f"Total items before saving: {len(data)}")
               data = sorted(list(set(data)))  # 保留去重和排序操作
+              print(f"Total items after deduplication: {len(data)}")
               with open(path, 'w') as f:
                   json.dump(data, f, indent=2)
 
@@ -63,6 +64,9 @@ jobs:
 
               # 这里根据新的 updated_female 列表重新更新 female_names.json
               female = updated_female
+
+          # 打印最终更新后的数据
+          print(f"Total female names to be saved: {len(female)}")
 
           save_json("female_names.json", female)
           save_json("surnames.json", surnames)
