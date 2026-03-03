@@ -25,7 +25,7 @@ jobs:
               return []
 
           def save_json(path, data):
-              # 保存前打印数据的长度，确保文件保存正确
+              # 打印数据长度，确保文件保存正确
               print(f"Total items before saving: {len(data)}")
               data = sorted(list(set(data)))  # 去重并排序
               print(f"Total items after deduplication: {len(data)}")
@@ -37,14 +37,16 @@ jobs:
 
           if os.path.exists("input.txt"):
               with open("input.txt", "r") as f:
-                  lines = [l.strip().upper() for l in f.readlines() if l.strip()]  # 将每行转换为大写并去掉空行
+                  # 读取并将每个名字转换为大写，同时去掉多余的空格
+                  lines = [l.strip().upper() for l in f.readlines() if l.strip()]
                   print(f"Read {len(lines)} lines from input.txt.")  # 打印读取的行数
                   print("Lines read from input.txt:")
                   for line in lines:
                       print(f"Processing: {line}")  # 打印每一行的内容
 
               mode = None
-              updated_female = []  # 新建一个列表存储更新后的名字
+              updated_female = []  # 新建一个列表存储更新后的女性名字
+              updated_surnames = []  # 新建一个列表存储更新后的姓氏
 
               # 读取 input.txt 中的名字并添加到列表中
               for line in lines:
@@ -56,17 +58,19 @@ jobs:
                       continue
 
                   # 移除空格后再添加到列表中
-                  line = line.replace(" ", "")  # 移除名字中的空格
+                  line = line.replace(" ", "")  # 去掉名字中的空格
                   if mode == "female":
                       updated_female.append(line)
                   elif mode == "surname":
-                      surnames.append(line)
+                      updated_surnames.append(line)
 
-              # 这里根据新的 updated_female 列表重新更新 female_names.json
+              # 更新 female_names.json 和 surnames.json 中的名字
               female = updated_female
+              surnames = updated_surnames
 
           # 打印最终更新后的数据
           print(f"Total female names to be saved: {len(female)}")
+          print(f"Total surnames to be saved: {len(surnames)}")
 
           save_json("female_names.json", female)
           save_json("surnames.json", surnames)
