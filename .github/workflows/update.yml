@@ -37,7 +37,8 @@ jobs:
           if os.path.exists("input.txt"):
               with open("input.txt", "r") as f:
                   lines = [l.strip().upper() for l in f.readlines() if l.strip()]  # 将每行转换为大写
-                  print("Read lines from input.txt:")
+                  print(f"Read {len(lines)} lines from input.txt.")  # 打印读取的行数
+                  print("Lines read from input.txt:")
                   for line in lines:
                       print(f"Processing: {line}")  # 打印每一行的内容
 
