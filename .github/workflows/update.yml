@@ -25,7 +25,7 @@ jobs:
               return []
 
           def save_json(path, data):
-              data = sorted(list(set(data)))
+              data = sorted(list(set(data)))  # 如果你不想去重，去掉这行
               with open(path, 'w') as f:
                   json.dump(data, f, indent=2)
 
@@ -53,6 +53,11 @@ jobs:
           save_json("female_names.json", female)
           save_json("surnames.json", surnames)
           EOF
+
+      - name: Check updated files
+        run: |
+          cat female_names.json
+          cat surnames.json
 
       - name: Commit changes
         run: |
