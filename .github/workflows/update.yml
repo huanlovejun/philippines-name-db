@@ -25,7 +25,9 @@ jobs:
               return []
 
           def save_json(path, data):
-              data = sorted(list(set(data)))  # 如果你不想去重，去掉这行
+              # 保存前打印数据的长度，确保文件保存正确
+              print(f"Saving {len(data)} items to {path}")
+              data = sorted(list(set(data)))  # 保留去重和排序操作
               with open(path, 'w') as f:
                   json.dump(data, f, indent=2)
 
@@ -34,7 +36,10 @@ jobs:
 
           if os.path.exists("input.txt"):
               with open("input.txt", "r") as f:
-                  lines = [l.strip().upper() for l in f.readlines() if l.strip()]
+                  lines = [l.strip().upper() for l in f.readlines() if l.strip()]  # 将每行转换为大写
+                  print("Read lines from input.txt:")
+                  for line in lines:
+                      print(f"Processing: {line}")  # 打印每一行的内容
 
               mode = None
               for line in lines:
@@ -45,19 +50,16 @@ jobs:
                       mode = "surname"
                       continue
 
+                  # 移除空格后再添加到列表中
+                  line = line.replace(" ", "")  # 移除名字中的空格
                   if mode == "female":
-                      female.append(line.replace(" ", ""))
+                      female.append(line)
                   elif mode == "surname":
-                      surnames.append(line.replace(" ", ""))
+                      surnames.append(line)
 
           save_json("female_names.json", female)
           save_json("surnames.json", surnames)
           EOF
-
-      - name: Check updated files
-        run: |
-          cat female_names.json
-          cat surnames.json
 
       - name: Commit changes
         run: |
