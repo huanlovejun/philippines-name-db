@@ -25,7 +25,7 @@ jobs:
               return []
 
           def save_json(path, data):
-              # 打印数据长度，确保文件保存正确
+              # 保存前打印数据的长度，确保文件保存正确
               print(f"Total items before saving: {len(data)}")
               data = sorted(list(set(data)))  # 去重并排序
               print(f"Total items after deduplication: {len(data)}")
@@ -37,8 +37,7 @@ jobs:
 
           if os.path.exists("input.txt"):
               with open("input.txt", "r") as f:
-                  # 读取并将每个名字转换为大写，同时去掉多余的空格
-                  lines = [l.strip().upper() for l in f.readlines() if l.strip()]
+                  lines = [l.strip().upper() for l in f.readlines() if l.strip()]  # 转换为大写并去掉空行
                   print(f"Read {len(lines)} lines from input.txt.")  # 打印读取的行数
                   print("Lines read from input.txt:")
                   for line in lines:
