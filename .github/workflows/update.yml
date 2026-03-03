@@ -42,6 +42,9 @@ jobs:
                       print(f"Processing: {line}")  # 打印每一行的内容
 
               mode = None
+              updated_female = []  # 新建一个列表存储更新后的名字
+
+              # 读取 input.txt 中的名字并添加到列表中
               for line in lines:
                   if line == "FEMALE:":
                       mode = "female"
@@ -53,9 +56,12 @@ jobs:
                   # 移除空格后再添加到列表中
                   line = line.replace(" ", "")  # 移除名字中的空格
                   if mode == "female":
-                      female.append(line)
+                      updated_female.append(line)
                   elif mode == "surname":
                       surnames.append(line)
+
+              # 这里根据新的 updated_female 列表重新更新 female_names.json
+              female = updated_female
 
           save_json("female_names.json", female)
           save_json("surnames.json", surnames)
