@@ -1,6 +1,5 @@
 FEMALE:
 Hermila
-nina
 Heroilda
 Herminia
 Hollie
