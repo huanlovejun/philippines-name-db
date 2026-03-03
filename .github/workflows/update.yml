@@ -1,0 +1,63 @@
+name: Update Name Database
+
+on:
+  push:
+    paths:
+      - 'input.txt'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Process input
+        run: |
+          python3 <<EOF
+          import json
+          import os
+
+          def load_json(path):
+              if os.path.exists(path):
+                  with open(path, 'r') as f:
+                      return json.load(f)
+              return []
+
+          def save_json(path, data):
+              data = sorted(list(set(data)))
+              with open(path, 'w') as f:
+                  json.dump(data, f, indent=2)
+
+          female = load_json("female_names.json")
+          surnames = load_json("surnames.json")
+
+          if os.path.exists("input.txt"):
+              with open("input.txt", "r") as f:
+                  lines = [l.strip().upper() for l in f.readlines() if l.strip()]
+
+              mode = None
+              for line in lines:
+                  if line == "FEMALE:":
+                      mode = "female"
+                      continue
+                  if line == "SURNAME:":
+                      mode = "surname"
+                      continue
+
+                  if mode == "female":
+                      female.append(line.replace(" ", ""))
+                  elif mode == "surname":
+                      surnames.append(line.replace(" ", ""))
+
+          save_json("female_names.json", female)
+          save_json("surnames.json", surnames)
+          EOF
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add female_names.json surnames.json
+          git commit -m "Auto update name database" || echo "No changes"
+          git push
